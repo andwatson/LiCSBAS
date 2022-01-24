@@ -599,15 +599,22 @@ def read_range_geo(range_str, width, length, lat1, postlat, lon1, postlon):
     return [x1, x2, y1, y2]
 
 #%%
-def poly_mask(poly_str, width, length, lat1, postlat, lon1, postlon):
+def poly_mask(poly_str, lon, lat):
     """
-    lat1 is north edge and postlat is negative value.
     lat lon values are in grid registration
+    poly coords in long lat
     """
+    print(poly_str) 
+    # read coord string and split into numpy arrays
+    coord_str = [float(s) for s in re.split('[,]', poly_str)]
+    lon_poly, lat_poly = np.asarray(coord_str[::2]), np.asarray(coord_str[1::2])
 
-    coord_str = [int(s) for s in re.split('[,]', ii)]
-    lon_coords, lat_coords = coord_str[::2], coord_str[1::2]
+    # generate coordinate mesh
+    lon_grid, lat_grid = np.meshgrid(lon, lat)
 
+    # create poly from coords and return points within polygon
+    poly = path.Path(np.vstack((lon_poly, lat_poly)).T)
+    poly_mask = poly.contains_points(np.transpose([lon_grid.flatten(), lat_grid.flatten()])).reshape(np.shape(lon_grid))
 
     return poly_mask
 

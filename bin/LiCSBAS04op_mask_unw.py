@@ -239,12 +239,22 @@ def main(argv=None):
     
     ### Read -p option
     if poly_file:
-    
+        
+        print('Masking using polygon file') 
         with open(poly_file) as f:
             poly_strings_all = f.readlines()
 
+        dempar = os.path.join(in_dir, 'EQA.dem_par')
+        lat1 = float(io_lib.get_param_par(dempar, 'corner_lat')) # north
+        lon1 = float(io_lib.get_param_par(dempar, 'corner_lon')) # west
+        postlat = float(io_lib.get_param_par(dempar, 'post_lat')) # negative
+        postlon = float(io_lib.get_param_par(dempar, 'post_lon')) # positive
+        lat2 = lat1+postlat*(length-1) # south
+        lon2 = lon1+postlon*(width-1) # east
+        lon, lat = np.arange(lon1, lon2+postlon, postlon), np.arange(lat1, lat2+postlat, postlat)
+
         for poly_str in poly_strings_all:
-            bool_mask = bool_mask + tools_lib.poly_mask(poly_str, width, length, lat1, postlat, lon1, postlon)
+            bool_mask = bool_mask + tools_lib.poly_mask(poly_str, lon, lat)
 
     ### Save image of mask
     mask = np.float32(~bool_mask)
