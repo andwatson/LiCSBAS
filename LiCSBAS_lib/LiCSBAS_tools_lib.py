@@ -8,6 +8,9 @@ Python3 library of time series analysis tools for LiCSBAS.
 =========
 Changelog
 =========
+20220121, Andrew Watson
+ - added poly_mask function (in progres)
+
 v1.8 20210309 Yu Morishita, GSI
  - Add GPU option to fit2dh (but not recommended)
 v1.7 20210205 Yu Morishita, GSI
@@ -45,7 +48,7 @@ import numpy as np
 import warnings
 from matplotlib.colors import LinearSegmentedColormap as LSC
 from matplotlib import pyplot as plt
-
+import matplotlib.path as path
 
 #%%
 def bl2xy(lon, lat, width, length, lat1, postlat, lon1, postlon):
@@ -595,6 +598,18 @@ def read_range_geo(range_str, width, length, lat1, postlat, lon1, postlon):
 
     return [x1, x2, y1, y2]
 
+#%%
+def poly_mask(poly_str, width, length, lat1, postlat, lon1, postlon):
+    """
+    lat1 is north edge and postlat is negative value.
+    lat lon values are in grid registration
+    """
+
+    coord_str = [int(s) for s in re.split('[,]', ii)]
+    lon_coords, lat_coords = coord_str[::2], coord_str[1::2]
+
+
+    return poly_mask
 
 #%%
 def read_range_line_geo(range_str, width, length, lat_n, postlat, lon_w, postlon):
