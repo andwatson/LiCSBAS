@@ -224,7 +224,7 @@ def plot_network(ifgdates, bperp, rm_ifgdates, pngfile, ifg_cands=[], plot_bad=T
     n_im_all = len(imdates_all)
     imdates_dt_all = np.array(([dt.datetime.strptime(imd, '%Y%m%d') for imd in imdates_all])) ##datetime
 
-    ifgdates = list(set(ifgdates)-set(rm_ifgdates))
+    ifgdates = list(set(ifgdates)-set(rm_ifgdates)-set(ifg_cands))
     ifgdates.sort()
     imdates = tools_lib.ifgdates2imdates(ifgdates)
     n_im = len(imdates)
