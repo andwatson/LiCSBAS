@@ -180,7 +180,7 @@ def main(argv=None):
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
-    bool_mask = np.zeros((length, width), dtype=np.bool)
+    bool_mask = np.zeros((length, width), dtype=bool)
 
 
     #%% Check and set pixels to be masked based on coherence
@@ -253,9 +253,6 @@ def main(argv=None):
         lon2 = lon1+postlon*(width-1) # east
         #lon, lat = np.arange(lon1, lon2+postlon, postlon), np.arange(lat1, lat2+postlat, postlat)
         lon, lat = np.linspace(lon1, lon2, width), np.linspace(lat1, lat2, length)
-        print(lon.shape,lat.shape)
-        print(lat1, lat2, postlat)
-        print(((lat2+postlat)-lat1)/postlat)
         for poly_str in poly_strings_all:
             bool_mask = bool_mask + tools_lib.poly_mask(poly_str, lon, lat)
 
