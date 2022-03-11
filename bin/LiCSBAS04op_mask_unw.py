@@ -251,8 +251,11 @@ def main(argv=None):
         postlon = float(io_lib.get_param_par(dempar, 'post_lon')) # positive
         lat2 = lat1+postlat*(length-1) # south
         lon2 = lon1+postlon*(width-1) # east
-        lon, lat = np.arange(lon1, lon2+postlon, postlon), np.arange(lat1, lat2+postlat, postlat)
-
+        #lon, lat = np.arange(lon1, lon2+postlon, postlon), np.arange(lat1, lat2+postlat, postlat)
+        lon, lat = np.linspace(lon1, lon2, width), np.linspace(lat1, lat2, length)
+        print(lon.shape,lat.shape)
+        print(lat1, lat2, postlat)
+        print(((lat2+postlat)-lat1)/postlat)
         for poly_str in poly_strings_all:
             bool_mask = bool_mask + tools_lib.poly_mask(poly_str, lon, lat)
 
