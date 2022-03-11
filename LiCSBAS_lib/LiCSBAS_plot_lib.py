@@ -209,7 +209,7 @@ def plot_hgt_corr(data_bf, fit_hgt, hgt, title, pngfile):
 
 
 #%%
-def plot_network(ifgdates, bperp, rm_ifgdates, pngfile, plot_bad=True):
+def plot_network(ifgdates, bperp, rm_ifgdates, pngfile, ifg_cands=[], plot_bad=True):
     """
     Plot network of interferometric pairs.
     
@@ -224,7 +224,7 @@ def plot_network(ifgdates, bperp, rm_ifgdates, pngfile, plot_bad=True):
     n_im_all = len(imdates_all)
     imdates_dt_all = np.array(([dt.datetime.strptime(imd, '%Y%m%d') for imd in imdates_all])) ##datetime
 
-    ifgdates = list(set(ifgdates)-set(rm_ifgdates))
+    ifgdates = list(set(ifgdates)-set(rm_ifgdates)-set(ifg_cands))
     ifgdates.sort()
     imdates = tools_lib.ifgdates2imdates(ifgdates)
     n_im = len(imdates)
@@ -255,7 +255,16 @@ def plot_network(ifgdates, bperp, rm_ifgdates, pngfile, plot_bad=True):
             label = 'Removed IFG' if i==0 else '' #label only first
             plt.plot([imdates_dt_all[ix_m], imdates_dt_all[ix_s]], [bperp[ix_m],
                     bperp[ix_s]], color='r', alpha=0.6, zorder=6, label=label)
-
+           
+    ### IFG bad candidates green lines
+    if plot_bad:
+        for i, ifgd in enumerate(ifg_cands):
+            ix_m = imdates_all.index(ifgd[:8])
+            ix_s = imdates_all.index(ifgd[-8:])
+            label = 'Bad Cands IFG' if i==0 else '' #label only first
+            plt.plot([imdates_dt_all[ix_m], imdates_dt_all[ix_s]], [bperp[ix_m],
+                    bperp[ix_s]], color='g', alpha=0.6, zorder=6, label=label)
+           
     ### Image points and dates
     ax.scatter(imdates_dt_all, bperp, alpha=0.6, zorder=4)
     for i in range(n_im_all):

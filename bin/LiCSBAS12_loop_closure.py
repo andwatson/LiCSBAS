@@ -650,7 +650,7 @@ def main(argv=None):
     plot_lib.plot_network(ifgdates, bperp, [], pngfile)
 
     pngfile = os.path.join(netdir, 'network12.png')
-    plot_lib.plot_network(ifgdates, bperp, bad_ifg_all, pngfile)
+    plot_lib.plot_network(ifgdates, bperp, bad_ifg_all, pngfile, bad_ifg_cand_res)
 
     pngfile = os.path.join(netdir, 'network12_nobad.png')
     plot_lib.plot_network(ifgdates, bperp, bad_ifg_all, pngfile, plot_bad=False)
