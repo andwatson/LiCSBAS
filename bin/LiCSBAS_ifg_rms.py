@@ -102,7 +102,7 @@ def main(argv=None):
     ### Read data and calculate
     for ifgix, ifgd in enumerate(ifgdates):
         if np.mod(ifgix,100) == 0:
-            print("  {0:3}/{1:3}th unw to identify valid area...".format(ifgix, n_ifg), flush=True)
+            print("Calculating RMS for {0:3}/{1:3}th unw.".format(ifgix, n_ifg), flush=True)
         unwfile = os.path.join(in_dir, ifgd, ifgd+'.unw')
         unw = io_lib.read_img(unwfile, length, width)
 

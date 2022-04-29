@@ -273,8 +273,8 @@ def main(argv=None):
 
     cumh5file = os.path.join(tsadir,'cum.h5')
     
-    if inv_alg in ('WLS', 'WLS_rms'):
-        modelvarfile = os.path.join(infodir, 'model_var.txt')
+    #if inv_alg in ('WLS', 'WLS_rms'):
+    modelvarfile = os.path.join(infodir, '13model_var.txt')
 
     ### Read in ifg rms text file for WLS with rms weighting
     if inv_alg == 'WLS_rms': 
@@ -691,13 +691,17 @@ def main(argv=None):
                 inc_tmp, vel_tmp, vconst_tmp = inv_lib.invert_nsbas_wls(
                     unwpatch, varpatch, G, dt_cum, gamma, n_para_inv)
 
-                ### Estimate model variance for inc
+                ### Estimate model variance
                 W = np.linalg.inv(np.diag(varpatch[0,:]))
                 Qd = np.linalg.inv(G.transpose()@W@G)
                 np.savetxt(modelvarfile, np.diag(Qd), fmt='%2.3f')
             else:
                 inc_tmp, vel_tmp, vconst_tmp = inv_lib.invert_nsbas(
                     unwpatch, G, dt_cum, gamma, n_para_inv, gpu)
+
+                ### Estimate model variance
+                Qd = np.linalg.inv(G.transpose()@G)
+                np.savetxt(modelvarfile, np.diag(Qd), fmt='%2.3f')
 
             ### Set to valuables
             inc_patch = np.zeros((n_im-1, n_pt_all), dtype=np.float32)*np.nan
